@@ -1,0 +1,11 @@
+{
+  "id": "calendar-hub",
+  "name": "Calendar Hub (baixiao)",
+  "description": "基于 Calendar Hub 0.2.3 的定制版：日历格子右上角显示当天笔记数/未完成待办数，日历下方接待办面板（可勾选写回 md、可新增），笔记列表去掉路径行。原始项目见 github.com/HWY1dot0/calendar-hub。",
+  "version": "0.2.3",
+  "author": "HWY1dot0（原始作者） / baixiao（本地定制）",
+  "authorUrl": "https://github.com/HWY1dot0",
+  "fundingUrl": "https://www.buymeacoffee.com/hwy1dot0",
+  "isDesktopOnly": false,
+  "minAppVersion": "1.7.2"
+}

@@ -1,0 +1,758 @@
+.settings-banner {
+  background-color: var(--background-secondary-alt);
+  border-radius: 4px;
+  margin-bottom: 2em;
+  padding: 1.5em;
+  text-align: left;
+}
+
+.settings-banner-title {
+  font-weight: var(--font-bold);
+  margin: 0 0 0.5em;
+}
+
+.calendar-note-panel {
+  border-top: 1px solid var(--background-modifier-border);
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin-top: 12px;
+  min-height: 0;
+  padding-top: 10px;
+}
+
+.calendar-note-panel-header {
+  align-items: center;
+  color: var(--text-muted);
+  display: flex;
+  font-size: 12px;
+  gap: 8px;
+  justify-content: space-between;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.calendar-note-count {
+  flex: 0 0 auto;
+}
+
+.calendar-note-list {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0;
+  padding-right: 2px;
+}
+
+.calendar-note-list li {
+  margin: 0;
+  padding: 0;
+}
+
+.calendar-note-list-item {
+  align-items: flex-start;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  box-shadow: none;
+  color: var(--text-normal);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font: inherit;
+  height: auto;
+  line-height: 1.35;
+  min-height: 0;
+  padding: 8px;
+  text-align: left;
+  transition: background-color 120ms ease, border-color 120ms ease;
+  white-space: normal;
+  width: 100%;
+}
+
+.calendar-note-list-item:hover {
+  background: var(--background-modifier-hover);
+  border-color: var(
+    --background-modifier-border-hover,
+    var(--background-modifier-border)
+  );
+}
+
+.calendar-note-list-item:focus-visible {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: 2px;
+}
+
+.calendar-note-title,
+.calendar-note-path {
+  overflow-wrap: anywhere;
+}
+
+.calendar-note-title {
+  color: var(--text-normal);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.calendar-note-path,
+.calendar-note-empty {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.calendar-note-path {
+  margin-top: 2px;
+}
+
+.calendar-note-empty {
+  padding: 4px 0;
+}
+
+.calendar-filter-panel {
+  border-top: 1px solid var(--background-modifier-border);
+  margin-top: 10px;
+  padding-top: 8px;
+}
+
+.calendar-filter-toggle {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  font-size: 12px;
+  justify-content: space-between;
+  line-height: 1.4;
+  padding: 4px;
+  text-align: left;
+  width: 100%;
+}
+
+.calendar-filter-toggle:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+.calendar-filter-toggle:focus-visible,
+.calendar-filter-action:focus-visible,
+.calendar-filter-textarea:focus-visible {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: 2px;
+}
+
+.calendar-filter-summary {
+  color: var(--text-faint);
+  flex: 0 0 auto;
+  margin-left: 8px;
+}
+
+.calendar-filter-body {
+  margin-top: 6px;
+}
+
+.calendar-filter-textarea {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  color: var(--text-normal);
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.35;
+  min-height: 64px;
+  padding: 6px;
+  resize: vertical;
+  width: 100%;
+}
+
+.calendar-filter-textarea::placeholder {
+  color: var(--text-faint);
+}
+
+.calendar-folder-list {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 6px;
+  max-height: 180px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.calendar-folder-row {
+  align-items: center;
+  border-radius: 4px;
+  display: flex;
+  gap: 2px;
+}
+
+.calendar-folder-row:hover {
+  background: var(--background-modifier-hover);
+}
+
+.calendar-folder-expand {
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  font-size: 10px;
+  height: 18px;
+  line-height: 18px;
+  padding: 0;
+  width: 16px;
+}
+
+.calendar-folder-expand-spacer {
+  flex-shrink: 0;
+  width: 16px;
+}
+
+.calendar-folder-option {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  flex: 1;
+  font-size: 12px;
+  gap: 6px;
+  min-width: 0;
+  padding: 2px 4px 2px 0;
+}
+
+.calendar-folder-option input[type="checkbox"] {
+  flex-shrink: 0;
+  margin: 0;
+}
+
+.calendar-folder-path {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-list-controls {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.calendar-hub-view-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.calendar-hub-nav {
+  flex-shrink: 0;
+}
+
+.calendar-hub-list-panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.calendar-hub-list-panel .calendar-list-tree {
+  flex: 1;
+  max-height: none;
+}
+
+.calendar-list-total {
+  align-self: center;
+  color: var(--text-faint);
+  flex-shrink: 0;
+  font-size: 11px;
+}
+
+.calendar-list-filter-toggle {
+  margin-bottom: 6px;
+}
+
+.calendar-settings-folder-tree {
+  margin: 0 0 18px;
+}
+
+.calendar-settings-folder-tree .calendar-folder-list {
+  max-width: 480px;
+}
+
+.calendar-list-filter-body {
+  margin-bottom: 6px;
+}
+
+.calendar-list-select {
+  flex: 1;
+  font-size: 12px;
+  min-width: 0;
+}
+
+.calendar-list-tree {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 4px;
+}
+
+.calendar-list-group {
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  box-shadow: none;
+  color: var(--text-normal);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  font-size: 12px;
+  gap: 4px;
+  height: auto;
+  padding: 3px 4px;
+  text-align: left;
+  width: 100%;
+}
+
+.calendar-list-group:hover {
+  background: var(--background-modifier-hover);
+}
+
+.calendar-list-subgroup {
+  padding-left: 18px;
+}
+
+.calendar-list-caret {
+  color: var(--text-muted);
+  flex-shrink: 0;
+  font-size: 10px;
+  width: 12px;
+}
+
+.calendar-list-label {
+  flex: 1;
+  font-weight: 500;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-list-count {
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+.calendar-list-days {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding-left: 18px;
+}
+
+.calendar-list-days-nested {
+  padding-left: 32px;
+}
+
+.calendar-list-day {
+  color: var(--text-muted);
+  font-size: 11px;
+  margin-top: 4px;
+  padding: 0 4px;
+}
+
+.calendar-list-note {
+  background: none;
+  border: none;
+  border-radius: 4px;
+  box-shadow: none;
+  color: var(--text-normal);
+  cursor: pointer;
+  display: block;
+  font: inherit;
+  font-size: 12px;
+  height: auto;
+  overflow: hidden;
+  padding: 2px 4px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.calendar-list-note:hover {
+  background: var(--background-modifier-hover);
+}
+
+.calendar-filter-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.calendar-filter-action {
+  background: var(--interactive-normal);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  box-shadow: none;
+  color: var(--text-normal);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  height: auto;
+  line-height: 1.4;
+  padding: 4px 8px;
+}
+
+.calendar-filter-action:hover:not(:disabled) {
+  background: var(--interactive-hover);
+}
+
+.calendar-filter-action:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.calendar-hub-todo-panel {
+  border-top: 1px solid var(--background-modifier-border);
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  margin-top: 12px;
+  max-height: 46%;
+  min-height: 0;
+  padding-top: 10px;
+}
+
+.calendar-hub-todo-panel-header {
+  align-items: center;
+  color: var(--text-muted);
+  display: flex;
+  font-size: 12px;
+  gap: 8px;
+  justify-content: space-between;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.calendar-hub-todo-count {
+  flex: 0 0 auto;
+}
+
+.calendar-hub-todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0;
+  padding-right: 2px;
+}
+
+.calendar-hub-todo-empty {
+  color: var(--text-muted);
+  font-size: 11px;
+  padding: 4px 0;
+}
+
+.calendar-hub-todo-item {
+  align-items: flex-start;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  color: var(--text-normal);
+  cursor: pointer;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.calendar-hub-todo-item:hover {
+  background: var(--background-modifier-hover);
+  border-color: var(
+    --background-modifier-border-hover,
+    --background-modifier-border
+  );
+}
+
+.calendar-hub-todo-item:focus-visible {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: 2px;
+}
+
+.calendar-hub-todo-panel input.calendar-hub-todo-check {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 1.5px solid var(--text-faint);
+  border-radius: 3px;
+  box-shadow: none;
+  cursor: pointer;
+  flex: 0 0 auto;
+  height: 13px;
+  margin: 2px 0 0;
+  padding: 0;
+  width: 13px;
+}
+
+.calendar-hub-todo-panel input.calendar-hub-todo-check:hover {
+  border-color: var(--interactive-accent);
+}
+
+.calendar-hub-todo-panel input.calendar-hub-todo-check:checked {
+  background-color: var(--interactive-accent);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.6 6.3l2.3 2.3 4.5-5' fill='none' stroke='%23ffffff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 9px 9px;
+  border-color: var(--interactive-accent);
+}
+
+.calendar-hub-todo-body {
+  min-width: 0;
+}
+
+.calendar-hub-todo-text {
+  font-size: 13px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.calendar-hub-todo-item.is-done .calendar-hub-todo-text {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.calendar-hub-todo-meta {
+  color: var(--text-muted);
+  font-size: 11px;
+  margin-top: 2px;
+  overflow-wrap: anywhere;
+}
+
+.calendar-hub-todo-title {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+}
+
+.calendar-hub-todo-add {
+  align-items: center;
+  background: none;
+  border: none;
+  border-radius: 3px;
+  box-shadow: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  flex: 0 0 auto;
+  height: 18px;
+  justify-content: center;
+  padding: 0;
+  width: 18px;
+}
+
+.calendar-hub-todo-add:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+.calendar-hub-todo-add:focus-visible {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: 2px;
+}
+
+.calendar-hub-todo-add svg {
+  height: 13px;
+  width: 13px;
+}
+
+/* --- 日历格子徽标：格子内右上角，笔记数（上）/ 未完成待办数（下）---
+   绝对定位到格子右上角，不改动 .day 原有布局（日期仍居中、圆点位置不变）。
+   外观全部走 CSS 变量，由插件设置面板写进 document.body：
+     --hub-badge-font / --hub-badge-size / --hub-badge-weight
+     --hub-badge-offset-x（距右边缘）/ --hub-badge-offset-y（距顶边缘）/ --hub-badge-gap
+     --hub-badge-note-color / --hub-badge-todo-color
+   变量未设置时用 var() 里的兜底值。必须加 .calendar 前缀：插件运行时注入的是
+   .day.svelte-*（特异性 0,2,0），裸 .day（0,1,0）会被静默覆盖。
+
+   竖直空间的真实约束（实测 31px 高的格子）：
+     .day padding 4px；日期行 4~19；.dot-container 固定在 y[21,27]。
+     也就是说「日期与圆点之间」只有 y[0,21] 这 21px 给徽标用，两个数字叠起来
+     需要 2×字号 + 间距 + 上边距。默认 9px/间距1/上边距2 正好是 21px，已是上限；
+     字号再大就一定会碰到圆点（不是本样式的 bug，是格子真的只有这么高）。
+     所以 ::after 用 clamp 保证「两数之间永不互相压字」，与圆点相撞则优先让位：
+       clamp(下界=上边距+字号, 理想=上边距+字号+间距, 上界=格子高-字号-上边距)
+     clamp 在 min>max 时返回 min（等价 max(min, min(val, max))），因此极端参数下
+     橙字会越过圆点、但绝不会压在红字上。 */
+.calendar .day[data-hub-notes]::before,
+.calendar .day[data-hub-todos]::after {
+  font-family: var(--hub-badge-font, inherit);
+  font-size: var(--hub-badge-size, 9px);
+  font-weight: var(--hub-badge-weight, 500);
+  line-height: 1;
+  pointer-events: none;
+  position: absolute;
+  right: var(--hub-badge-offset-x, 3px);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.calendar .day[data-hub-notes]::before {
+  color: var(--hub-badge-note-color, var(--color-red));
+  content: attr(data-hub-notes);
+  top: var(--hub-badge-offset-y, 2px);
+}
+
+.calendar .day[data-hub-todos]::after {
+  color: var(--hub-badge-todo-color, var(--color-orange));
+  content: attr(data-hub-todos);
+  /* 下界 = 红字底部（保证两数不互相压字）
+     理想 = 红字底部 + 间距
+     上界 = 贴到距格子底部一个上边距的位置（保证不画到格子外） */
+  top: clamp(
+    calc(var(--hub-badge-offset-y, 2px) + var(--hub-badge-size, 9px)),
+    calc(
+      var(--hub-badge-offset-y, 2px) + var(--hub-badge-size, 9px) +
+        var(--hub-badge-gap, 1px)
+    ),
+    calc(100% - var(--hub-badge-size, 9px) - var(--hub-badge-offset-y, 2px))
+  );
+}
+
+/* ===== 本地定制：layout-horizontal（待办横排 + 笔记卡片瘦身）=====
+   位置要求：这一段必须在 styles.css 的**最末尾**。它和上面的规则特异性相同，
+   靠「源码顺序靠后」覆盖，所以不能挪到前面去。
+
+   为什么要覆盖而不是改上面的规则：本插件是打包产物，升级会整体覆盖
+   styles.css。用「末尾追加 + 幂等标记」的方式，升级后重跑一次补丁即可恢复，
+   也不需要去匹配旧规则的确切文本（那样一升级就断）。
+
+   幂等标记：calendar-hub-layout */
+
+/* ===== 待办卡片尺寸：要调就只改下面两个数 =====
+   ① --hub-todo-lines  正文最多显示几行。改这一个数，卡片高度和整个待办区
+      的高度都会自动算出来（行高 × 行数 + 内边距），不需要手动同步。
+      为什么必须联动：文字用 -webkit-line-clamp 按行截断，如果只把卡片调矮
+      而不改行数，第三行会被卡片从**半截**切断，很难看。
+   ② --hub-todo-card-w 卡片宽度（横向那条边）。越窄同屏能放越多张，
+      但每行字数变少、长待办更容易被省略号截掉。
+      参考（面板 620px 实测）：120px → 一屏 5 张 / 每行 6 字；
+      135px → 4 张 / 7 字；150px → 4 张 / 8 字；170px → 3 张 / 10 字。
+
+   下面四个是排版常量，一般不用动。 */
+:root {
+  --hub-todo-lines: 3;
+  --hub-todo-card-w: 150px;
+
+  --hub-todo-line-h: 17.55px; /* 一行正文高度 = 13px 字号 × 1.35 行高 */
+  --hub-todo-pad-y: 16px;     /* 卡片上下内边距合计 = 8px × 2 */
+  --hub-todo-chrome: 37px;    /* 待办区固定开销：内边距 10 + 边框 1 + 头部 26 */
+  --hub-todo-gutter: 17px;    /* 给横向滚动条预留（Windows 实体条约 11px） */
+}
+
+/* --- 待办面板：高度由上面的行数算出来 ---
+   原来写的是 max-height: 46%（百分比），实测兜不住：待办一多就按自然高度撑开，
+   把 flex:1 的笔记面板压到只剩表头。改成算出来的固定高度，笔记区拿到的空间就恒定。 */
+.calendar-hub-todo-panel {
+  flex: 0 0 auto;
+  height: calc(
+    var(--hub-todo-lines) * var(--hub-todo-line-h) + var(--hub-todo-pad-y) +
+      var(--hub-todo-chrome) + var(--hub-todo-gutter)
+  );
+  max-height: none;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* --- 待办列表：竖排 → 单行横排 + 横向滚动 --- */
+.calendar-hub-todo-list {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  gap: 6px;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 0 2px;
+  scrollbar-width: thin;
+}
+
+/* --- 待办卡片：宽高都写死 ---
+   不能靠 align-self: stretch 让卡片撑满列表高度 —— 横向滚动条出现/消失会吃掉
+   约 11px，卡片高度会跟着跳。写死高度才和滚动条无关。 */
+.calendar-hub-todo-item {
+  align-items: flex-start;
+  align-self: flex-start;
+  flex: 0 0 var(--hub-todo-card-w, 170px);
+  height: calc(var(--hub-todo-lines) * var(--hub-todo-line-h) + var(--hub-todo-pad-y));
+  min-width: 0;
+  overflow: hidden;
+}
+
+.calendar-hub-todo-body {
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* --- 待办正文：最多 --hub-todo-lines 行，超出加省略号 ---
+   overflow-wrap: anywhere 是必需的：中文长句、超长英文单词、不带空格的 URL
+   都不会自动断行。光给 overflow: hidden 会在半行处切断，很难看。 */
+.calendar-hub-todo-text {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--hub-todo-lines);
+  display: -webkit-box;
+  line-clamp: var(--hub-todo-lines);
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+/* --- 卡片里的「来源 2026-09-08」不显示（面板标题已经有日期了）--- */
+.calendar-hub-todo-meta {
+  display: none;
+}
+
+/* --- 笔记卡片：去掉路径行 ---
+   路径没丢：按钮的 title 属性仍是完整路径，鼠标悬停可见。 */
+.calendar-note-path {
+  display: none;
+}
+
+.calendar-note-list-item {
+  align-items: stretch;
+  padding: 6px 8px;
+}
+
+.calendar-note-list {
+  gap: 5px;
+}
+
+/* --- 笔记标题：一行 + 省略号 ---
+   原来的 .calendar-note-list-item 是 align-items: flex-start，flex column 下
+   span 的宽度由内容决定，text-overflow: ellipsis 永远不触发。
+   所以上面必须先把 align-items 改成 stretch，这里再给 width: 100%。 */
+.calendar-note-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}

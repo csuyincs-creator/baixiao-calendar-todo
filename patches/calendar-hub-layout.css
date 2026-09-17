@@ -1,0 +1,118 @@
+/* ===== 本地定制：layout-horizontal（待办横排 + 笔记卡片瘦身）=====
+   位置要求：这一段必须在 styles.css 的**最末尾**。它和上面的规则特异性相同，
+   靠「源码顺序靠后」覆盖，所以不能挪到前面去。
+
+   为什么要覆盖而不是改上面的规则：本插件是打包产物，升级会整体覆盖
+   styles.css。用「末尾追加 + 幂等标记」的方式，升级后重跑一次补丁即可恢复，
+   也不需要去匹配旧规则的确切文本（那样一升级就断）。
+
+   幂等标记：calendar-hub-layout */
+
+/* ===== 待办卡片尺寸：要调就只改下面两个数 =====
+   ① --hub-todo-lines  正文最多显示几行。改这一个数，卡片高度和整个待办区
+      的高度都会自动算出来（行高 × 行数 + 内边距），不需要手动同步。
+      为什么必须联动：文字用 -webkit-line-clamp 按行截断，如果只把卡片调矮
+      而不改行数，第三行会被卡片从**半截**切断，很难看。
+   ② --hub-todo-card-w 卡片宽度（横向那条边）。越窄同屏能放越多张，
+      但每行字数变少、长待办更容易被省略号截掉。
+      参考（面板 620px 实测）：120px → 一屏 5 张 / 每行 6 字；
+      135px → 4 张 / 7 字；150px → 4 张 / 8 字；170px → 3 张 / 10 字。
+
+   下面四个是排版常量，一般不用动。 */
+:root {
+  --hub-todo-lines: 3;
+  --hub-todo-card-w: 150px;
+
+  --hub-todo-line-h: 17.55px; /* 一行正文高度 = 13px 字号 × 1.35 行高 */
+  --hub-todo-pad-y: 16px;     /* 卡片上下内边距合计 = 8px × 2 */
+  --hub-todo-chrome: 37px;    /* 待办区固定开销：内边距 10 + 边框 1 + 头部 26 */
+  --hub-todo-gutter: 17px;    /* 给横向滚动条预留（Windows 实体条约 11px） */
+}
+
+/* --- 待办面板：高度由上面的行数算出来 ---
+   原来写的是 max-height: 46%（百分比），实测兜不住：待办一多就按自然高度撑开，
+   把 flex:1 的笔记面板压到只剩表头。改成算出来的固定高度，笔记区拿到的空间就恒定。 */
+.calendar-hub-todo-panel {
+  flex: 0 0 auto;
+  height: calc(
+    var(--hub-todo-lines) * var(--hub-todo-line-h) + var(--hub-todo-pad-y) +
+      var(--hub-todo-chrome) + var(--hub-todo-gutter)
+  );
+  max-height: none;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* --- 待办列表：竖排 → 单行横排 + 横向滚动 --- */
+.calendar-hub-todo-list {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  gap: 6px;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 0 2px;
+  scrollbar-width: thin;
+}
+
+/* --- 待办卡片：宽高都写死 ---
+   不能靠 align-self: stretch 让卡片撑满列表高度 —— 横向滚动条出现/消失会吃掉
+   约 11px，卡片高度会跟着跳。写死高度才和滚动条无关。 */
+.calendar-hub-todo-item {
+  align-items: flex-start;
+  align-self: flex-start;
+  flex: 0 0 var(--hub-todo-card-w, 170px);
+  height: calc(var(--hub-todo-lines) * var(--hub-todo-line-h) + var(--hub-todo-pad-y));
+  min-width: 0;
+  overflow: hidden;
+}
+
+.calendar-hub-todo-body {
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* --- 待办正文：最多 --hub-todo-lines 行，超出加省略号 ---
+   overflow-wrap: anywhere 是必需的：中文长句、超长英文单词、不带空格的 URL
+   都不会自动断行。光给 overflow: hidden 会在半行处切断，很难看。 */
+.calendar-hub-todo-text {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--hub-todo-lines);
+  display: -webkit-box;
+  line-clamp: var(--hub-todo-lines);
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+/* --- 卡片里的「来源 2026-09-08」不显示（面板标题已经有日期了）--- */
+.calendar-hub-todo-meta {
+  display: none;
+}
+
+/* --- 笔记卡片：去掉路径行 ---
+   路径没丢：按钮的 title 属性仍是完整路径，鼠标悬停可见。 */
+.calendar-note-path {
+  display: none;
+}
+
+.calendar-note-list-item {
+  align-items: stretch;
+  padding: 6px 8px;
+}
+
+.calendar-note-list {
+  gap: 5px;
+}
+
+/* --- 笔记标题：一行 + 省略号 ---
+   原来的 .calendar-note-list-item 是 align-items: flex-start，flex column 下
+   span 的宽度由内容决定，text-overflow: ellipsis 永远不触发。
+   所以上面必须先把 align-items 改成 stretch，这里再给 width: 100%。 */
+.calendar-note-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
