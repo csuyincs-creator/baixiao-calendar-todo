@@ -21,12 +21,16 @@
  *   升级后按顺序重跑第一批 + 这一批即可。补丁前自动备份。
  *
  * 配套文件（同目录）
- *   calendar-hub-layout.css       —— 要追加到 styles.css 末尾的覆盖样式
+ *   calendar-hub-layout.css       —— 要追加到 styles.css 的覆盖样式
+ *                                    （位置：文件末尾，但在 note-dir 块之前）
  *   calendar-hub-layout-wheel.js  —— 要插入 main.js 的滚轮横滚代码
  *
  * 顺序要求
  *   必须在 calendar-hub-u2011-date.patch.js 和 calendar-hub-todo-panel.patch.js
  *   **之后**运行：main.js 的插入锚点来自第一批补丁插入的代码。
+ *
+ *   styles.css 里本段的覆盖块后面还有 calendar-hub-note-dir.patch.js 的块，
+ *   所以本脚本用 BLOCK_END 划出边界，只替换自己那一段，不会吃掉后面的。
  */
 
 const fs = require('fs');
@@ -99,16 +103,23 @@ if (main.includes(MARKER_JS)) {
 }
 
 // ---------- styles.css：追加 / 就地替换覆盖样式 ----------
-// 这一段补丁「拥有」从 BLOCK_START 到文件末尾的全部内容：
+// 这一段补丁「拥有」[BLOCK_START, BLOCK_END) 之间的全部内容：
 //   没打过 → 追加；打过 → 就地替换成最新版本（所以改了片段重跑就能升级）。
-// 约束：这个覆盖块必须留在 styles.css 最末尾（特异性相同，靠源码顺序生效），
-//       不要在它后面再追加别的东西，否则会被这次替换吃掉。
+// 约束：这个覆盖块必须留在 styles.css 最末尾（特异性相同，靠源码顺序生效）。
+//
+// BLOCK_END 是**下一批补丁的起点**（calendar-hub-note-dir.patch.js 的块）。
+// 有了它，本段补丁重跑时只替换自己这一段，不会把后面那段吃掉。
+// 以后若还要在后面追加新的覆盖块，把它也加进这里的判断即可。
 const BLOCK_START = '/* ===== 本地定制：layout-horizontal';
+const BLOCK_END = '/* ===== 本地定制：note-dir';
 let css = fs.readFileSync(STYLES, 'utf8');
 const append = fs.readFileSync(LAYOUT_CSS, 'utf8');
 const at = css.indexOf(BLOCK_START);
+const endAt = at >= 0 ? css.indexOf(BLOCK_END, at) : -1;
+// 本段之后还有别的补丁块 → 原样保留（补一个换行，与片段末尾的 \n 合成空行）
+const tail = endAt >= 0 ? '\n' + css.slice(endAt) : '';
 if (at >= 0) {
-  const next = css.slice(0, at).replace(/\s+$/, '\n\n') + append;
+  const next = css.slice(0, at).replace(/\s+$/, '\n\n') + append + tail;
   if (next === css) {
     console.log('· styles.css 的 layout-horizontal 覆盖块已是最新，跳过');
   } else {

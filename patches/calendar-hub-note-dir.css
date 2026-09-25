@@ -1,0 +1,43 @@
+/* ===== 本地定制：note-dir（笔记卡片右侧显示顶层目录名）=====
+   对应 main.js 里的 getNoteTopFolder() + button 的 data-hub-dir 属性。
+
+   为什么用 ::after + attr() 而不是加一个 span：
+   这样 main.js 只需写一个属性，不用碰 Svelte 的 append / text / 更新链。
+
+   约束：本段必须留在 styles.css 的【最末尾】——
+   它覆盖上面 layout-horizontal 块里的 .calendar-note-list-item / .calendar-note-title，
+   两者特异性相同，靠源码顺序生效。不要在它后面再追加任何东西。 */
+
+/* 卡片改成横向排布：标题占满剩余宽度，目录名被挤到最右 */
+.calendar-note-list-item {
+  align-items: center;
+  flex-direction: row;
+  gap: 8px;
+}
+
+/* 标题：flex-grow 吃掉剩余空间 → 目录名自然贴右，两者之间不会紧挨 */
+.calendar-note-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: auto; /* 必须显式覆盖 layout 块里的 width: 100% */
+}
+
+/* 目录名：半角方括号包裹，11px 灰色小字。
+   flex: 0 0 auto + max-width: 45% 实现「标题优先」——
+   目录名最多占卡片 45%，超了就省略号；标题永远至少拿到 55%。
+   没有 data-hub-dir 属性（库根目录的文件）时整条规则不匹配，不渲染。 */
+.calendar-note-list-item[data-hub-dir]::after {
+  content: "[" attr(data-hub-dir) "]";
+  color: var(--text-muted);
+  flex: 0 0 auto;
+  font-size: 11px;
+  line-height: 1.35;
+  max-width: 45%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

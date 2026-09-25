@@ -7001,6 +7001,7 @@ function create_each_block4(key_1, ctx) {
       attr(span1, "class", "calendar-note-path");
       attr(button, "class", "calendar-note-list-item");
       attr(button, "type", "button");
+      attr(button, "data-hub-dir", getNoteTopFolder(ctx[35].path));
       attr(button, "title", button_title_value = /*note*/
       ctx[35].path);
       this.first = li;
@@ -7031,6 +7032,10 @@ function create_each_block4(key_1, ctx) {
       16 && button_title_value !== (button_title_value = /*note*/
       ctx[35].path)) {
         attr(button, "title", button_title_value);
+      }
+      if (dirty[0] & /*selectedNotes*/
+      16) {
+        attr(button, "data-hub-dir", getNoteTopFolder(ctx[35].path));
       }
     },
     d(detaching) {
@@ -7561,6 +7566,17 @@ var noteCountSource = {
     });
   }
 };
+
+// ===== 笔记卡片目录名(本地定制:note-dir) =====
+// 取笔记路径的「第一段」作为顶层目录名,供笔记卡片右侧显示。
+//   "06 每日灵感/2026-09/2026-09-24.md"        -> "06 每日灵感"
+//   "03 知识库分析报告/01 日报/2026-09/x.md"   -> "03 知识库分析报告"
+// 直接位于库根目录的文件没有目录,返回 null;此时不写 data-hub-dir 属性,
+// CSS 的 ::after 选择器匹配不上,自然就不渲染,不会出现空的 "[]"。
+function getNoteTopFolder(notePath) {
+  const segments = String(notePath || "").split("/");
+  return segments.length > 1 && segments[0] ? segments[0] : null;
+}
 
 // ===== 待办事项面板(本地定制:接入 06 每日灵感/00 清晨方白晓-待办事项.md) =====
 var TODO_NOTE_PATH = "06 每日灵感/00 清晨方白晓-待办事项.md";
