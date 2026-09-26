@@ -7246,11 +7246,15 @@ function instance4($$self, $$props, $$invalidate) {
   function handleClickDay(date, isMetaPressed2) {
     $$invalidate(26, selectionMode = "day");
     $$invalidate(24, selectedDate = date.clone());
+    hubSelectedDayKey = date.format("YYYY-MM-DD");
+    $$invalidate(1, sources = sources.slice());
     void onClickDay(date, isMetaPressed2);
   }
   function handleClickWeek(date, isMetaPressed2) {
     $$invalidate(26, selectionMode = "week");
     $$invalidate(25, selectedWeek = date.clone());
+    hubSelectedDayKey = null;
+    $$invalidate(1, sources = sources.slice());
     void onClickWeek(date, isMetaPressed2);
   }
   function handleResetDisplayedMonth(date) {
@@ -7259,6 +7263,8 @@ function instance4($$self, $$props, $$invalidate) {
     $$invalidate(26, selectionMode = "day");
     $$invalidate(25, selectedWeek = null);
     $$invalidate(24, selectedDate = date.clone());
+    hubSelectedDayKey = date.format("YYYY-MM-DD");
+    $$invalidate(1, sources = sources.slice());
     const todaysNotes = getDailyNotesForDate(date, $dailyNotesByDate, $dailyNotes);
     if (todaysNotes.length === 1) {
       void onOpenDayNote(todaysNotes[0], false);
@@ -7313,6 +7319,7 @@ function instance4($$self, $$props, $$invalidate) {
     16777220) {
       $: if (!selectedDate && today) {
         $$invalidate(24, selectedDate = today.clone());
+        hubSelectedDayKey = today.format("YYYY-MM-DD");
       }
     }
     if ($$self.$$.dirty[0] & /*selectionMode, selectedWeek, $weeklyNotesByDate, $weeklyNotes, selectedDate, $dailyNotesByDate, $dailyNotes*/
@@ -7577,6 +7584,35 @@ function getNoteTopFolder(notePath) {
   const segments = String(notePath || "").split("/");
   return segments.length > 1 && segments[0] ? segments[0] : null;
 }
+
+// ===== 选中日填充(本地定制:active-fill) =====
+// 「当前正在看的那一天」在插件内部叫 selectedDate —— 点某天时更新,底部笔记面板
+// 显示的就是这天。但它只喂给了笔记面板,从来没有传进日历格子,
+// 所以点某天时格子上没有任何视觉反馈。
+//
+// 这里借 sources 扩展点把它变成格子上的一个 class,完全不碰 Svelte 的 props 链:
+//   sources 里每个 source 形如 { getDailyMetadata(date) => { classes, dataAttributes, dots } },
+//   metadataReducer 会把各个 source 返回的 classes 合并进 day div 的 class。
+//
+// 两个必须注意的点:
+//   1. source 绝不能返回 null。metadataReducer 里直接写的是 meta2.classes,
+//      返回 null 会当场抛错。不匹配时返回 {} 即可。
+//   2. 改完 hubSelectedDayKey 必须让日历重算一次 metadata,否则 class 加不上。
+//      重算的开关是 sources 的引用:CalendarView.p() 只在 sources 变脏时才往下传,
+//      CalendarBase 那边也是 (dirty & /*sources, month, today*/) 命中才重新调用
+//      getDailyMetadata。所以下面每个入口都配了一句 sources = sources.slice()。
+let hubSelectedDayKey = null;
+if (window.moment) {
+  hubSelectedDayKey = window.moment().format("YYYY-MM-DD");
+}
+
+const hubSelectedDaySource = {
+  getDailyMetadata(date) {
+    if (!hubSelectedDayKey) return {};
+    if (date.format("YYYY-MM-DD") !== hubSelectedDayKey) return {};
+    return { classes: ["hub-selected"] };
+  }
+};
 
 // ===== 待办事项面板(本地定制:接入 06 每日灵感/00 清晨方白晓-待办事项.md) =====
 var TODO_NOTE_PATH = "06 每日灵感/00 清晨方白晓-待办事项.md";
@@ -8234,7 +8270,8 @@ var CalendarView = class extends import_obsidian10.ItemView {
       streakSource,
       noteCountSource,
       tasksSource,
-      hubBadgeSource
+      hubBadgeSource,
+      hubSelectedDaySource
     ];
     this.app.workspace.trigger(TRIGGER_ON_OPEN, this.sources);
     this.renderMode(this.getMode());

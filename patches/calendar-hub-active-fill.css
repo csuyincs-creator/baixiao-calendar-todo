@@ -1,0 +1,53 @@
+/* ===== 本地定制：active-fill（选中日填充）=====
+   对应 main.js 里的 hubSelectedDaySource —— 它给「当前正在看的那一天」的 .day
+   加上 hub-selected class（点某天就更新，底部笔记面板显示的也是这天）。
+
+   为什么选择器要写这么长：
+   插件的 .day 样式是 Svelte 运行时注入到 <head> 的，相关几条是
+     .day.svelte-q3wqg9              (0,2,0)
+     .active.svelte-q3wqg9           (0,2,0)  ← 插件原本的「选中」填充
+     .day.active.svelte-q3wqg9:hover (0,4,0)  ← 悬停时换回 accent-hover
+   裸写 .day.hub-selected 是 (0,2,0)，.calendar .day.hub-selected 是 (0,2,1)，
+   都压不住上面第二条；所以补到 .container .calendar .day.hub-selected (0,4,0)，
+   再加一条 :hover (0,5,0) 盖掉「悬停时底色被换掉」的行为。
+
+   颜色走 CSS 变量，想换色不用改这段：
+     --calendar-hub-selected-fill   选中日底色（默认跟随主题强调色）
+     --calendar-hub-selected-text   选中日文字色（默认用主题为强调色配的对比色）
+     --calendar-hub-selected-hover  悬停时的底色（默认与选中色相同，即悬停不变色）
+
+   约束：本段必须留在 styles.css 的【最末尾】。 */
+
+.container .calendar .day.hub-selected {
+  background-color: var(--calendar-hub-selected-fill, var(--interactive-accent));
+  color: var(--calendar-hub-selected-text, var(--text-on-accent));
+}
+
+/* 悬停保持同一底色，否则会被 .day.active.svelte-q3wqg9:hover 换回 accent-hover */
+.container .calendar .day.hub-selected:hover {
+  background-color: var(--calendar-hub-selected-hover, var(--calendar-hub-selected-fill, var(--interactive-accent)));
+  color: var(--calendar-hub-selected-text, var(--text-on-accent));
+}
+
+/* 格子里的圆点默认 fill 是 --color-dot（= --text-muted），压在深底上偏暗，跟着文字提亮 */
+.container .calendar .day.hub-selected .dot.filled {
+  fill: var(--calendar-hub-selected-text, var(--text-on-accent));
+}
+
+/* 右上角的红/橙徽标压在选中日的深底上会糊（实测对比度：笔记数 3.00 -> 1.38，
+   待办数 4.24 -> 1.96；而纯红对深红最高也只有 1.89，靠调亮救不回来）。
+   修法：加一圈深色描边把字从底色里拎出来 + 提亮 1.8 倍。
+   1.8 是量出来的：再往上（2.6）红会偏粉、橙会偏黄，色相就跑掉了；
+   这两条都不改颜色本身，你设的红/橙配色原样保留。
+   不想要这个处理，把下面这条规则整段删掉即可。 */
+.container .calendar .day.hub-selected[data-hub-notes]::before,
+.container .calendar .day.hub-selected[data-hub-todos]::after {
+  filter: brightness(1.8);
+  text-shadow:
+    0 0 2px rgba(0, 0, 0, 0.95),
+    0 0 3px rgba(0, 0, 0, 0.85);
+}
+
+/* 选中日恰好是今天时，日期数字原本走 --color-text-today（= 强调色），
+   会和底色撞成一片。上面那条 color 已经盖住它
+   （0,4,0 > .today.svelte-q3wqg9 的 0,2,0），这里不再重复。 */

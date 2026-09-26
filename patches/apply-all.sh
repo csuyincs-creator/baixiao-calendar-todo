@@ -44,6 +44,7 @@ PATCHES=(
   calendar-hub-todo-panel.patch.js
   calendar-hub-layout.patch.js
   calendar-hub-note-dir.patch.js
+  calendar-hub-active-fill.patch.js
 )
 
 for p in "${PATCHES[@]}"; do

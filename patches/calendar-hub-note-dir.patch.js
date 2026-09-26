@@ -35,7 +35,9 @@
  *   **之后**运行：main.js 的插入锚点是待办面板那块代码。
  *   与 calendar-hub-layout.patch.js 无先后依赖，但建议排在它后面 ——
  *   本段的 CSS 覆盖 layout 块里的 .calendar-note-list-item / .calendar-note-title，
- *   两者特异性相同，靠源码顺序生效，所以必须留在 styles.css 最末尾。
+ *   两者特异性相同，靠源码顺序生效。
+ *   必须排在 calendar-hub-active-fill.patch.js **之前** ——
+ *   本段的 BLOCK_END 指向 active-fill 块的标记。
  */
 
 const fs = require('fs');
@@ -58,8 +60,12 @@ const APPEND_CSS = path.join(PATCH_DIR, 'calendar-hub-note-dir.css');
 // 注释可能被改，这行代码不会。这行在打完补丁后会出现两次（c() 和 p()）。
 const MARKER_JS = 'attr(button, "data-hub-dir", getNoteTopFolder(ctx[35].path));';
 
-// 本段补丁「拥有」从这一行到 styles.css 末尾的全部内容
+// 本段补丁「拥有」从 BLOCK_START 到 BLOCK_END 之间的全部内容。
+// BLOCK_END 指向**下一个**覆盖块的起点。不划这条界，本补丁重跑时会把排在
+// 它后面的 active-fill 块整段吃掉 —— 而且很难发现：内容没变时会走
+// 「已是最新，跳过」分支，只有真的改了片段才走到替换分支。
 const BLOCK_START = '/* ===== 本地定制：note-dir';
+const BLOCK_END = '/* ===== 本地定制：active-fill';
 
 const now = new Date();
 const pad = (n) => String(n).padStart(2, '0');
@@ -159,8 +165,11 @@ if (main.includes(MARKER_JS)) {
 let css = fs.readFileSync(STYLES, 'utf8');
 const append = fs.readFileSync(APPEND_CSS, 'utf8');
 const at = css.indexOf(BLOCK_START);
+const endAt = at >= 0 ? css.indexOf(BLOCK_END, at) : -1;
+// 本段之后还有别的补丁块 → 原样保留（补一个换行，与片段末尾的 \n 合成空行）
+const tail = endAt >= 0 ? '\n' + css.slice(endAt) : '';
 if (at >= 0) {
-  const next = css.slice(0, at).replace(/\s+$/, '\n\n') + append;
+  const next = css.slice(0, at).replace(/\s+$/, '\n\n') + append + tail;
   if (next === css) {
     console.log('· styles.css 的 note-dir 覆盖块已是最新，跳过');
   } else {
